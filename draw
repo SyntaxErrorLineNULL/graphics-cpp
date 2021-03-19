@@ -1,0 +1,65 @@
+//draw a rectangle with color blue
+            /*hpen = CreatePen(PS_SOLID, 4, RGB(0, 0, 255));
+            SelectObject(hdc, hpen);
+            Rectangle(hdc, 10, 10, width - 10, height - 10);
+            DeleteObject(hpen);
+
+            //fill a solid rectangle
+            hbrush = CreateSolidBrush(RGB(250, 0, 0));
+            FillRect(hdc, &rect, hbrush);
+
+            //fill a hatch rectangle
+            hbrush = CreateHatchBrush(HS_CROSS, RGB(0, 240, 0));
+            rect.left = 220;
+            rect.top = 20;
+            rect.right = 400;
+            rect.bottom = 100;
+            FillRect(hdc, &rect, hbrush);
+
+            //draw a ellipse
+            hpen = CreatePen(PS_SOLID, 2, RGB(140, 0, 0));
+            SelectObject(hdc, hpen);
+            Ellipse(hdc,30,200,200,110);
+            DeleteObject(hpen);
+
+            //fill an ellipse
+            hbrush = CreateHatchBrush(HS_DIAGCROSS, RGB(255, 0, 250));
+            SelectObject(hdc,hbrush);
+            Ellipse(hdc, 420, 200, 220, 110);
+            DeleteObject(hbrush);
+
+            //draw round rect
+            hpen = CreatePen(PS_SOLID, 2, RGB(0, 255, 60));
+            hbrush = CreateHatchBrush(HS_HORIZONTAL, RGB(0, 0, 150));
+            SelectObject(hdc, hpen);
+            SelectObject(hdc, hbrush);
+            RoundRect(hdc, 300, 210, 30, 300, 50, 50);
+            DeleteObject(hbrush);
+            DeleteObject(hpen);
+
+            //draw arc
+            hpen = CreatePen(PS_SOLID, 2, RGB(0, 100, 0));
+            SelectObject(hdc, hpen);
+            Arc(hdc, 400, 320, 30, 450, 30, 40, 300, 400);
+            DeleteObject(hpen);
+
+            //draw polygon
+            hpen = CreatePen(PS_SOLID, 2, RGB(0, 140, 140));
+            hbrush = CreateHatchBrush(HS_FDIAGONAL, RGB(0, 140, 140));
+            SelectObject(hdc, hpen);
+            SelectObject(hdc, hbrush);
+            Polygon(hdc, pt, 4);
+            DeleteObject(hbrush);
+            DeleteObject(hpen);
+
+            //draw a text
+            SetTextColor(hdc, RGB(0, 100, 0));
+            TextOut(hdc, 600, 70, TEXT("Win32 Basic Drawing"),19);*/
+
+            // draw line
+            //DrawTree(9, hdc, DrawLineAngle, DrawLine, 350, 400, 90 , 90, 1, 25, 0.8);
+
+            SetTextColor(hdc, RGB(0, 100, 0));
+            TextOut(hdc, 600, 70, TEXT("Win32 Basic Drawing"),19);
+
+            EndPaint(hwnd, &ps);
