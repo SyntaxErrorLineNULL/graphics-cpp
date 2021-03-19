@@ -2,31 +2,36 @@
  * Author: SyntaxErrorLineNULL
  */
 
-#include<Windows.h>
+#include <windows.h>
 #include <cmath>
 
-constexpr double Radian = M_PI / 180.0F;
+HWND _hwnd;
+HDC _wdc;
+int _ord;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-void DrawLine(HDC hdc, int posX, int posY, int tgtX, int tgtY){
-    HPEN hPen = CreatePen(PS_SOLID, 2, RGB(255, 165, 0));
-    MoveToEx(hdc, posX, posY, nullptr);
-    SelectObject(hdc, hPen);
-    LineTo(hdc, tgtX, tgtY);
+void DrawSierpinskiCarpet(int posX, int posY, int width, int height);
+
+void Draw(HDC hdc, int Width, int Height, int ord){
+    _wdc = hdc;
+    _ord = Width / static_cast<int>(pow(3.0, ord) - 1);
+    DrawSierpinskiCarpet(0, 0, Width, Height);
 }
 
-void DrawTree(HDC hdc, int posX, int posY, int Angle, int Depth){
+void DrawSierpinskiCarpet(int posX, int posY, int width, int height) {
 
-    if(Depth > 0){
-        auto X = posX + (cos(Angle * Radian)) * Depth * 10.0;
-        auto Y = posY + (sin(Angle * Radian)) * Depth * 10.0;
+    if(width < _ord || height < _ord) return;
+    int Width = width / 3, Height = height / 3;
+    RECT rc;
+    SetRect(&rc, posX + Width, posY + Height, posX + Width + Width, posY + Height + Height);
+    FillRect(_wdc, &rc, static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
 
-        DrawLine(hdc, posX, posY, X, Y);
-
-        DrawTree(hdc, X, Y, Angle - 20, Depth - 1);
-        DrawTree(hdc, X, Y, Angle + 20, Depth - 1);
-
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            if(i == 1 && j == 1) continue;
+            DrawSierpinskiCarpet(posX + j * Width, posY + i * Height, Width, Height);
+        }
     }
 
 }
@@ -36,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
     MSG msg;
     HWND hwnd;
 
-    wndclass.lpszClassName = TEXT("Win32 tree drawing");
+    wndclass.lpszClassName = TEXT("Win32 Sierpinski carpet drawing");
     wndclass.cbClsExtra = 0;
     wndclass.cbWndExtra = 0;
     wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -53,8 +58,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
     }
 
 
-    hwnd = CreateWindow(TEXT("Win32 tree drawing"),
-                        TEXT("Win32 tree drawing basic pointer"),
+    hwnd = CreateWindow(TEXT("Win32 Sierpinski carpet drawing"),
+                        TEXT("Win32 Sierpinski carpet drawing window name"),
                         WS_OVERLAPPEDWINDOW,
                         200, 200, 700, 700, nullptr, nullptr, hInstance, nullptr
     );
@@ -70,26 +75,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 
     return msg.wParam;
 }
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
+
     HDC hdc;
     PAINTSTRUCT ps;
     int width, height;
 
     switch (message){
-        /**
-         * TODO create messageBox
-         */
         case WM_CREATE:
             return 0;
         case WM_SIZE:
-            /** TODO create form question size user */
-
             width = LOWORD(lParam);
             height = HIWORD(lParam);
 
-        case WM_PAINT:
+        case WM_PAINT :
             hdc = BeginPaint(hwnd, &ps);
-            DrawTree(hdc, 350, 500, -90, 9);
+            Draw(hdc, 400, 400, 5);
             return 0;
         case WM_DESTROY:
             PostQuitMessage(0);
